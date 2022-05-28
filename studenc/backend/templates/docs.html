@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Studenc Docs</title>
+    </head>
+    <body>
+        <h1>Studenc Docs</h1>
+        <a href="https://github.com/Studenc">GitHub</a>
+        <br><br>
+        <h3>GET /api/getjobs/</h3>
+        <p>Returns all jobs</p>
+        <br>
+        <pre><code>
+            [
+                {
+                    "id": 1,
+                    "title": "Pucanje",
+                    "location": "Lublana",
+                    "description": "model dost slabo ngl",
+                    "spots": 3,
+                    "code": 696969,
+                    "neto": 1.0,
+                    "bruto": 1.25,
+                    "phone": "040404040",
+                    "email": "jože@pucanje.riti",
+                    "contact": "Jožica",
+                    "company": 8,
+                    "date": "2022-05-28"
+                },
+                {
+                    "id": 2,
+                    "title": "Hookers",
+                    "location": "Corner of the street",
+                    "description": "self explanatory",
+                    "spots": 6,
+                    "code": 420420,
+                    "neto": 0.0,
+                    "bruto": 0.0,
+                    "phone": "789456123",
+                    "email": "hook@up.now",
+                    "contact": "Tvoja mami",
+                    "company": 9,
+                    "date": "2022-05-28"
+                },
+            ]
+        </code></pre>
+        <br><br>
+        <h3>GET /api/getcompanies/</h3>
+        <p>Returns all companies</p>
+        <br>
+        <pre><code>
+            [
+                {
+                    "id": 8,
+                    "name": "Jože s.p."
+                },
+                {
+                    "id": 9,
+                    "name": "Tvoja mami hookers d.o.o."
+                },
+            ]
+        </code></pre>
+        <br><br>
+        <h3>POST /api/getcompany/</h3>
+        <p>Creates company if it doesnt exist and returns id</p>
+        <br>
+        <pre><code>
+            name:companyname
+        </code></pre>
+        <br>
+        <pre><code>
+            {
+                "id": 15,
+                "name": "companyname"
+            }
+        </code></pre>
+        <br><br>
+        <h3>POST /api/postjob/</h3>
+        <p>Creates job if it does not yet exist</p>
+        <br>
+        <pre><code>
+            title:jobtitle
+            location:joblocation
+            description:jobdescription
+            spots:jobspots
+            code:jobcode
+            neto:jobneto
+            bruto:jobbruto
+            phone:jobphone
+            email:jobemail
+            contact:jobcontact
+            company:jobcompany
+            date:jobdate
+        </code></pre>
+        <br>
+        <pre><code>
+            job posted successfully | job already exists
+        </code></pre>
+    </body>
+</html>

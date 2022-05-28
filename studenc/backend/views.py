@@ -1,18 +1,9 @@
-from urllib.error import HTTPError
 from django.http import HttpResponse
-from django.shortcuts import render
 import json
-from django.views import View
-from rest_framework import generics
 from django.db.utils import IntegrityError
 from . import models
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import permissions
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-
+from django.template import loader
     
     
 def getCompanyList(request):
@@ -43,7 +34,7 @@ def postCompany(request):
 @csrf_exempt
 def postJob(request):
     try:
-        company = models.Company.objects.get(name=request.POST["company"])
+        company = models.Company.objects.get(id=request.POST["company"])
         job = models.Job(title=request.POST["title"], 
                          location=request.POST["location"], 
                          description=request.POST["description"], 
@@ -56,5 +47,10 @@ def postJob(request):
                          contact=request.POST["contact"], 
                          company=company)
         job.save()
+        return HttpResponse("job posted successfully", status=200)
     except IntegrityError:
-        return HTTPError(400, "Job ID already exists")
+        return HttpResponse("job already exists", status=400)
+    
+def docs(request):
+    template = loader.get_template('docs.html')
+    return HttpResponse(template.render())

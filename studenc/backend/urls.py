@@ -10,4 +10,5 @@ urlpatterns = [
     path('getjobs/', views.getJobs, name='getjobs'),
     path('postcompany/', views.postCompany, name='postcompany'),
     path('postjob/', views.postJob, name='postjob'),
+    path('docs/', views.docs, name='docs'),
 ]
