@@ -11,4 +11,5 @@ urlpatterns = [
     path('postcompany/', views.postCompany, name='postcompany'),
     path('postjob/', views.postJob, name='postjob'),
     path('docs/', views.docs, name='docs'),
+    path('search/jobs/', views.searchJobs, name='searchjobs'),
 ]

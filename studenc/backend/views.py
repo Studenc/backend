@@ -4,6 +4,7 @@ from django.db.utils import IntegrityError
 from . import models
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
     
     
 def getCompanyList(request):
@@ -17,6 +18,15 @@ def getJobs(request):
     data = json.dumps(list(jobs), default=str)
     
     return HttpResponse(data, content_type="application/json")
+
+def searchJobs(request):
+    query = request.GET.get("query")
+    svector = SearchVector("title", "description", "code", "location", "company__name")
+    squery = SearchQuery(query)
+    results = models.Job.objects.annotate(search=svector, rank=SearchRank(svector, squery)).filter(search=squery).order_by("-rank").values("id", "title", "location", "description", "spots", "code", "neto", "bruto", "phone", "email", "contact", "company", "date")
+    data = json.dumps(list(results), default=str)
+    
+    return(HttpResponse(data, content_type="application/json"))
 
 @csrf_exempt
 def postCompany(request):
