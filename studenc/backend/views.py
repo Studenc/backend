@@ -20,10 +20,19 @@ def getJobs(request):
     return HttpResponse(data, content_type="application/json")
 
 def searchJobs(request):
-    query = request.GET.get("query")
+    query = request.GET["q"]
     svector = SearchVector("title", "description", "code", "location", "company__name")
     squery = SearchQuery(query)
     results = models.Job.objects.annotate(search=svector, rank=SearchRank(svector, squery)).filter(search=squery).order_by("-rank").values("id", "title", "location", "description", "spots", "code", "neto", "bruto", "phone", "email", "contact", "company", "date")
+    data = json.dumps(list(results), default=str)
+    
+    return(HttpResponse(data, content_type="application/json"))
+
+def searchCompanies(request):
+    query = request.GET["q"]
+    svector = SearchVector("name", "id")
+    squery = SearchQuery(query)
+    results = models.Company.objects.annotate(search=svector, rank=SearchRank(svector, squery)).filter(search=squery).order_by("-rank").values("id", "name")
     data = json.dumps(list(results), default=str)
     
     return(HttpResponse(data, content_type="application/json"))

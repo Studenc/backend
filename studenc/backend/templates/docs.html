@@ -65,6 +65,7 @@
         <p>Creates company if it doesnt exist and returns id</p>
         <br>
         <pre><code>
+            request body
             name:companyname
         </code></pre>
         <br>
@@ -79,6 +80,7 @@
         <p>Creates job if it does not yet exist</p>
         <br>
         <pre><code>
+            request body
             title:jobtitle
             location:joblocation
             description:jobdescription
@@ -96,5 +98,70 @@
         <pre><code>
             job posted successfully | job already exists
         </code></pre>
+        <br><br>
+        <h3>GET /api/search/jobs/</h3>
+        <p>Returns all jobs matching search query</p>
+        <br>
+        <pre><code>
+            parameter
+            q:query
+        </code></pre>
+        <br>
+        <pre><code>
+            [
+                {
+                    "id": 3538,
+                    "title": "PROGRAMIRANJE",
+                    "location": "LJUBLJANA ŠIŠKA",
+                    "description": "Programiranje SCADA/PLC sistemov. Delo obsega: tehnična izvedba projektov, programiranje programabilnih krmilnikov in nadzornih sistemov, \r\npriprava tehničnih rešitev in tehnične dokumentacije, testiranje in dokumentiranje implementiranih rešitev. Kandidat/ka bo pridobil/a znanja: programiranje PLC (zaželene izkušnje z Opto 22, Siemens ali GE), znanje programiranja VBA, programiranje SCADA okolij (GE iFIX). Ponujajo: delo na zanimivih projektih, delo v farmaciji, možnost dodatnegai zobraževanja.",
+                    "spots": 0,
+                    "code": 366040,
+                    "neto": 0.0,
+                    "bruto": 0.0,
+                    "phone": "015140823",
+                    "email": "",
+                    "contact": "",
+                    "company": 3555,
+                    "date": "2022-05-28"
+                },
+                {
+                    "id": 1652,
+                    "title": "PROGRAMIRANJE",
+                    "location": "POSTOJNA",
+                    "description": "Programiranje Angular2 aplikacije (nodejs, mongodb). Podjetje si želi daljšega sodelovanja, po potrebi in dogovoru. V prijavi pošlji CV, naštej vsa svoja znanja in se predstavi.",
+                    "spots": 0,
+                    "code": 370019,
+                    "neto": 8.0,
+                    "bruto": 8.0,
+                    "phone": "",
+                    "email": "bojan@petkovsek.net",
+                    "contact": "",
+                    "company": 1669,
+                    "date": "2022-05-28"
+                }
+            ]
+        </code></pre>
+        <br><br>
+        <h3>GET /api/search/companies/</h3>
+        <p>Returns all companies matching search query</p>
+        <br>
+        <pre><code>
+            parameter
+            q:query
+        </code></pre>
+        <br>
+        <pre><code>
+            [
+                {
+                    "id": 3555,
+                    "name": "Jože s.p."
+                },
+                {
+                    "id": 1669,
+                    "name": "Petkovsek d.o.o."
+                }
+            ]
+        </code></pre>
+        <br><br>
     </body>
 </html>
