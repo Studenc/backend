@@ -71,9 +71,18 @@ def postJob(request):
             job.save()
             return HttpResponse("job posted successfully", status=200)
         except IntegrityError:
-            return HttpResponse("job already exists", status=400)
+            models.Job.objects.filter(code=request.POST["code"]).update(active=True)
+            return HttpResponse("job updated", status=400)
     return HttpResponse("Invalid API key", content_type="text/plain", code=403)
     
 def docs(request):
     template = loader.get_template('docs.html')
     return HttpResponse(template.render())
+
+@csrf_exempt
+def setAllInactive(request):
+    if models.APIAccessKey.objects.filter(key=request.POST["key"]).exists():
+        models.Job.objects.filter(active=True).update(active=False)
+        return HttpResponse("All jobs set to inactive", status=200)
+    else:
+        return HttpResponse("Invalid API key", content_type="text/plain", code=403)
