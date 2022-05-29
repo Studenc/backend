@@ -19,8 +19,16 @@ class Job(models.Model):
     contact = models.CharField(max_length=100)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
+    active = models.BooleanField(default=True)
     
     def __str__(self):
         return f"{self.title} - {self.code}"
+    
+class APIAccessKey(models.Model):
+    key = models.CharField(max_length=999)
+    name = models.CharField(max_length=999)
+    
+    def __str__(self):
+        return self.name
 
     

@@ -67,6 +67,7 @@
         <pre><code>
             request body
             name:companyname
+            key:apikey
         </code></pre>
         <br>
         <pre><code>
@@ -75,6 +76,7 @@
                 "name": "companyname"
             }
         </code></pre>
+        <p>To get the api key, tell the admin to insert it into the APIAccesKeys table</p>
         <br><br>
         <h3>POST /api/postjob/</h3>
         <p>Creates job if it does not yet exist</p>
@@ -93,11 +95,13 @@
             contact:jobcontact
             company:jobcompany
             date:jobdate
+            key:apikey
         </code></pre>
         <br>
         <pre><code>
             job posted successfully | job already exists
         </code></pre>
+        <p>To get the api key, tell the admin to insert it into the APIAccesKeys table</p>
         <br><br>
         <h3>GET /api/search/jobs/</h3>
         <p>Returns all jobs matching search query</p>

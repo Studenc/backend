@@ -39,36 +39,40 @@ def searchCompanies(request):
 
 @csrf_exempt
 def postCompany(request):
-    try:
-        company = models.Company(name=request.POST["name"])
-        company.save()
-        company = models.Company.objects.values("id", "name").get(name=request.POST["name"])
-        data = json.dumps(company)
-        return HttpResponse(data, content_type="application/json")
-    except IntegrityError:
-        company = models.Company.objects.values("id", "name").get(name=request.POST["name"])
-        data = json.dumps(company)
-        return HttpResponse(data, content_type="application/json")
+    if models.APIAccessKey.objects.filter(key=request.POST["key"]).exists():
+        try:
+            company = models.Company(name=request.POST["name"])
+            company.save()
+            company = models.Company.objects.values("id", "name").get(name=request.POST["name"])
+            data = json.dumps(company)
+            return HttpResponse(data, content_type="application/json")
+        except IntegrityError:
+            company = models.Company.objects.values("id", "name").get(name=request.POST["name"])
+            data = json.dumps(company)
+            return HttpResponse(data, content_type="application/json")
+    return HttpResponse("Invalid API key", content_type="text/plain", code=403)
     
 @csrf_exempt
 def postJob(request):
-    try:
-        company = models.Company.objects.get(id=request.POST["company"])
-        job = models.Job(title=request.POST["title"], 
-                         location=request.POST["location"], 
-                         description=request.POST["description"], 
-                         spots=request.POST["spots"], 
-                         code=request.POST["code"], 
-                         neto=request.POST["neto"], 
-                         bruto=request.POST["bruto"], 
-                         phone=request.POST["phone"], 
-                         email=request.POST["email"], 
-                         contact=request.POST["contact"], 
-                         company=company)
-        job.save()
-        return HttpResponse("job posted successfully", status=200)
-    except IntegrityError:
-        return HttpResponse("job already exists", status=400)
+    if models.APIAccessKey.objects.filter(key=request.POST["key"]).exists():
+        try:
+            company = models.Company.objects.get(id=request.POST["company"])
+            job = models.Job(title=request.POST["title"], 
+                            location=request.POST["location"], 
+                            description=request.POST["description"], 
+                            spots=request.POST["spots"], 
+                            code=request.POST["code"], 
+                            neto=request.POST["neto"], 
+                            bruto=request.POST["bruto"], 
+                            phone=request.POST["phone"], 
+                            email=request.POST["email"], 
+                            contact=request.POST["contact"], 
+                            company=company)
+            job.save()
+            return HttpResponse("job posted successfully", status=200)
+        except IntegrityError:
+            return HttpResponse("job already exists", status=400)
+    return HttpResponse("Invalid API key", content_type="text/plain", code=403)
     
 def docs(request):
     template = loader.get_template('docs.html')
