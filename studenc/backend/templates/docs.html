@@ -79,7 +79,7 @@
         <p>To get the api key, tell the admin to insert it into the APIAccesKeys table</p>
         <br><br>
         <h3>POST /api/postjob/</h3>
-        <p>Creates job if it does not yet exist</p>
+        <p>Creates job if it does not yet exist. /api/setallinactive/ should be called prior to this as all jobs already stored will be set back to active</p>
         <br>
         <pre><code>
             request body
@@ -166,6 +166,19 @@
                 }
             ]
         </code></pre>
+        <br><br>
+        <h3>POST /api/setinactive/</h3>
+        <p>Sets all jobs as inactive</p>
+        <br>
+        <pre><code>
+            parameter
+            key:apikey
+        </code></pre>
+        <br>
+        <pre><code>
+            job inactive successfully
+        </code></pre>
+        <p>To get the api key, tell the admin to insert it into the APIAccesKeys table</p>
         <br><br>
     </body>
 </html>

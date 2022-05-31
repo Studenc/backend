@@ -86,3 +86,35 @@ def setAllInactive(request):
         return HttpResponse("All jobs set to inactive", status=200)
     else:
         return HttpResponse("Invalid API key", content_type="text/plain", code=403)
+    
+def avg(list_):
+    return sum(list_) / len(list_)
+    
+@csrf_exempt
+def measureStats(request):
+    if models.APIAccessKey.objects.filter(key=request.POST["key"]).exists():
+        average_neto = avg(models.Job.objects.filter(active=True).values_list("neto", flat=True))
+        average_bruto = avg(models.Job.objects.filter(active=True).values_list("bruto", flat=True))
+        
+        try:
+            delta_neto = average_neto - getattr(models.StatRecord.objects.latest("id"), "average_neto")
+        except:
+            delta_neto = average_neto
+        
+        try:
+            delta_bruto = average_bruto - getattr(models.StatRecord.objects.latest("id"), "average_bruto")
+        except:
+            delta_bruto = average_bruto
+            
+        stats = models.StatRecord(numofjobs=models.Job.objects.filter(active=True).count(), 
+                                  numofcompanies=models.Company.objects.count(),
+                                  numofactivejobs=models.Job.objects.filter(active=True).count(),
+                                  average_neto=average_neto,
+                                  average_bruto=average_bruto,
+                                  delta_neto=delta_neto,
+                                  delta_bruto=delta_bruto)
+        stats.save()
+        return HttpResponse("Stats measured", status=200)
+    else:
+        return HttpResponse("Invalid API key", content_type="text/plain", code=403)
+        
