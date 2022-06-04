@@ -14,16 +14,40 @@ def getCompanyList(request):
     return HttpResponse(data, content_type="application/json")
 
 def getJobs(request):
-    jobs = models.Job.objects.values("id", "title", "location", "description", "spots", "code", "neto", "bruto", "phone", "email", "contact", "company", "date")
+    try:
+        active = request.GET["active"]
+        if active == "true":
+            jobs = models.Job.objects.filter(active=True).values("id", "title", "location", "description", "spots", "code", "neto", "bruto", "phone", "email", "contact", "company", "date", "active")
+            data = json.dumps(list(jobs), default=str)
+            
+            return HttpResponse(data, content_type="application/json")
+    except:
+        pass
+        
+    jobs = models.Job.objects.values("id", "title", "location", "description", "spots", "code", "neto", "bruto", "phone", "email", "contact", "company", "date", "active")
     data = json.dumps(list(jobs), default=str)
     
     return HttpResponse(data, content_type="application/json")
 
 def searchJobs(request):
     query = request.GET["q"]
+    
+    try:
+        active = request.GET["active"]
+        if active == "true":
+            active = True
+            svector = SearchVector("title", "description", "code", "location", "company__name")
+            squery = SearchQuery(query)
+            results = models.Job.objects.annotate(search=svector, rank=SearchRank(svector, squery)).filter(search=squery, active=active).order_by("-rank").values("id", "title", "location", "description", "spots", "code", "neto", "bruto", "phone", "email", "contact", "company", "date", "active")
+            data = json.dumps(list(results), default=str)
+        
+            return(HttpResponse(data, content_type="application/json"))
+    except:
+        pass
+    
     svector = SearchVector("title", "description", "code", "location", "company__name")
     squery = SearchQuery(query)
-    results = models.Job.objects.annotate(search=svector, rank=SearchRank(svector, squery)).filter(search=squery).order_by("-rank").values("id", "title", "location", "description", "spots", "code", "neto", "bruto", "phone", "email", "contact", "company", "date")
+    results = models.Job.objects.annotate(search=svector, rank=SearchRank(svector, squery)).filter(search=squery).order_by("-rank").values("id", "title", "location", "description", "spots", "code", "neto", "bruto", "phone", "email", "contact", "company", "date", "active")
     data = json.dumps(list(results), default=str)
     
     return(HttpResponse(data, content_type="application/json"))
